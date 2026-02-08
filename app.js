@@ -8,6 +8,127 @@ const CONTINENTS = [
   "South America",
 ];
 
+const CONTINENT_META = {
+  Africa: { code: "AF", vibe: "Wild Terrain" },
+  Antarctica: { code: "AN", vibe: "Polar Frontier" },
+  Asia: { code: "AS", vibe: "Temple Trails" },
+  Europe: { code: "EU", vibe: "Old-World Routes" },
+  "North America": { code: "NA", vibe: "Urban + Nature" },
+  Oceania: { code: "OC", vibe: "Island Orbit" },
+  "South America": { code: "SA", vibe: "Andes Pulse" },
+};
+
+const ACHIEVEMENT_BADGES = [
+  {
+    id: "boarded",
+    code: "GO",
+    title: "Boarding Pass",
+    description: "Log your first city to start your traveler identity.",
+    goal: 1,
+    unit: "cities",
+    metric: (stats) => stats.cityCount,
+  },
+  {
+    id: "city-streak",
+    code: "CS",
+    title: "City Streak",
+    description: "Hit five city logs to establish a consistent travel trail.",
+    goal: 5,
+    unit: "cities",
+    metric: (stats) => stats.cityCount,
+  },
+  {
+    id: "country-collector",
+    code: "CC",
+    title: "Country Collector",
+    description: "Expand across six countries.",
+    goal: 6,
+    unit: "countries",
+    metric: (stats) => stats.countryCount,
+  },
+  {
+    id: "continent-cartographer",
+    code: "CT",
+    title: "Continent Cartographer",
+    description: "Reach five continents logged.",
+    goal: 5,
+    unit: "continents",
+    metric: (stats) => stats.continentCount,
+  },
+  {
+    id: "food-trailblazer",
+    code: "FD",
+    title: "Food Trailblazer",
+    description: "Save fifteen restaurant spots from your trips.",
+    goal: 15,
+    unit: "restaurants",
+    metric: (stats) => stats.restaurantCount,
+  },
+  {
+    id: "photo-atlas",
+    code: "PX",
+    title: "Photo Atlas",
+    description: "Document twelve travel photos in your city logs.",
+    goal: 12,
+    unit: "photos",
+    metric: (stats) => stats.photoCount,
+  },
+  {
+    id: "route-architect",
+    code: "RT",
+    title: "Route Architect",
+    description: "Build ten itinerary days to help other travelers plan.",
+    goal: 10,
+    unit: "days",
+    metric: (stats) => stats.itineraryDayCount,
+  },
+  {
+    id: "insider-whisperer",
+    code: "TIP",
+    title: "Insider Whisperer",
+    description: "Share ten field tips from real on-the-ground experience.",
+    goal: 10,
+    unit: "tips",
+    metric: (stats) => stats.tipCount,
+  },
+  {
+    id: "open-journal",
+    code: "PUB",
+    title: "Open Journal",
+    description: "Keep at least three city logs public.",
+    goal: 3,
+    unit: "public logs",
+    metric: (stats) => stats.publicCount,
+  },
+  {
+    id: "inner-circle-host",
+    code: "FOL",
+    title: "Inner Circle Host",
+    description: "Publish two follower-only city guides.",
+    goal: 2,
+    unit: "follower logs",
+    metric: (stats) => stats.followerOnlyCount,
+  },
+  {
+    id: "vault-keeper",
+    code: "PVT",
+    title: "Vault Keeper",
+    description: "Keep one city private while you refine the guide.",
+    goal: 1,
+    unit: "private logs",
+    metric: (stats) => stats.privateCount,
+  },
+  {
+    id: "community-magnet",
+    code: "SOC",
+    title: "Community Magnet",
+    description: "Grow your profile to 1000 followers.",
+    goal: 1000,
+    unit: "followers",
+    metric: (stats) => stats.followerCount,
+  },
+];
+
 const trips = [
   {
     id: "barcelona",
@@ -270,6 +391,47 @@ function visibleTrip(trip) {
   return false;
 }
 
+function visibleBadgeTrips() {
+  if (state.mode === "owner") {
+    return trips;
+  }
+  return trips.filter((trip) => visibleTrip(trip));
+}
+
+function buildBadgeStats(sourceTrips) {
+  return {
+    cityCount: sourceTrips.length,
+    countryCount: new Set(sourceTrips.map((trip) => trip.country)).size,
+    continentCount: new Set(sourceTrips.map((trip) => trip.continent)).size,
+    restaurantCount: sourceTrips.reduce((total, trip) => total + trip.restaurants.length, 0),
+    photoCount: sourceTrips.reduce((total, trip) => total + trip.photos.length, 0),
+    itineraryDayCount: sourceTrips.reduce((total, trip) => total + trip.itinerary.length, 0),
+    tipCount: sourceTrips.reduce((total, trip) => total + trip.tips.length, 0),
+    publicCount: sourceTrips.filter((trip) => trip.privacy === "public").length,
+    followerOnlyCount: sourceTrips.filter((trip) => trip.privacy === "followers").length,
+    privateCount: sourceTrips.filter((trip) => trip.privacy === "private").length,
+    followerCount: state.followers,
+  };
+}
+
+function buildBadgeCounts(sourceTrips) {
+  const stats = buildBadgeStats(sourceTrips);
+  const unlockedContinents = CONTINENTS.filter((continent) =>
+    sourceTrips.some((trip) => trip.continent === continent)
+  ).length;
+  const unlockedAchievements = ACHIEVEMENT_BADGES.filter((badge) => badge.metric(stats) >= badge.goal).length;
+  const unlockedCityBadges = sourceTrips.length;
+
+  return {
+    unlocked: unlockedContinents + unlockedAchievements + unlockedCityBadges,
+    total: CONTINENTS.length + ACHIEVEMENT_BADGES.length + sourceTrips.length,
+    unlockedAchievements,
+    unlockedContinents,
+    unlockedCityBadges,
+    stats,
+  };
+}
+
 function filteredTrips() {
   const text = state.search.trim().toLowerCase();
   return trips.filter((trip) => {
@@ -349,10 +511,13 @@ function iconForPrivacy(privacy) {
 }
 
 function renderProfile() {
+  const badgeTrips = visibleBadgeTrips();
+  const badgeCounts = buildBadgeCounts(badgeTrips);
+
   document.getElementById("followersMetric").textContent = state.followers.toLocaleString();
   document.getElementById("followingMetric").textContent = state.following.toLocaleString();
   document.getElementById("citiesMetric").textContent = trips.length.toString();
-  document.getElementById("badgesMetric").textContent = trips.length.toString();
+  document.getElementById("badgesMetric").textContent = badgeCounts.unlocked.toString();
 
   const relationshipControl = document.getElementById("relationshipControl");
   const followBtn = document.getElementById("followBtn");
@@ -369,24 +534,97 @@ function renderProfile() {
 }
 
 function renderBadges() {
-  const wrap = document.getElementById("badgeGrid");
+  const continentWrap = document.getElementById("badgeGrid");
+  const achievementWrap = document.getElementById("achievementGrid");
+  const cityWrap = document.getElementById("cityBadgeGrid");
+  const summaryWrap = document.getElementById("badgeSummary");
+
+  const sourceTrips = visibleBadgeTrips();
+  const badgeCounts = buildBadgeCounts(sourceTrips);
+  const stats = badgeCounts.stats;
   const visitedByContinent = CONTINENTS.reduce((acc, continent) => {
-    acc[continent] = trips.filter((trip) => trip.continent === continent).length;
+    acc[continent] = sourceTrips.filter((trip) => trip.continent === continent).length;
     return acc;
   }, {});
 
-  const html = CONTINENTS.map((continent) => {
+  summaryWrap.innerHTML = `
+    <article class="summary-pill">
+      <h4>${badgeCounts.unlocked}/${badgeCounts.total}</h4>
+      <p>Badges unlocked</p>
+    </article>
+    <article class="summary-pill">
+      <h4>${badgeCounts.unlockedContinents}/${CONTINENTS.length}</h4>
+      <p>Continents covered</p>
+    </article>
+    <article class="summary-pill">
+      <h4>${badgeCounts.unlockedAchievements}/${ACHIEVEMENT_BADGES.length}</h4>
+      <p>Achievements unlocked</p>
+    </article>
+    <article class="summary-pill">
+      <h4>${badgeCounts.unlockedCityBadges}</h4>
+      <p>City signature badges</p>
+    </article>
+  `;
+
+  continentWrap.innerHTML = CONTINENTS.map((continent, index) => {
     const count = visitedByContinent[continent] || 0;
     const unlocked = count > 0;
+    const progress = Math.min(100, count * 34);
+    const meta = CONTINENT_META[continent] || { code: "TR", vibe: "Travel Track" };
     return `
-      <article class="badge ${unlocked ? "unlocked" : ""}">
+      <article class="badge badge--continent tone-${(index % 6) + 1} ${unlocked ? "unlocked" : "locked"}">
+        <div class="badge-top">
+          <span class="badge-icon">${meta.code}</span>
+          <span class="badge-status">${unlocked ? "Unlocked" : "Locked"}</span>
+        </div>
         <h4>${continent}</h4>
-        <p>${count > 0 ? `${count} city badge${count > 1 ? "s" : ""} unlocked` : "No badges yet"}</p>
+        <p>${meta.vibe}</p>
+        <p class="badge-progress-label">${count} city stamp${count === 1 ? "" : "s"}</p>
+        <div class="badge-progress"><span style="width: ${progress}%"></span></div>
       </article>
     `;
   }).join("");
 
-  wrap.innerHTML = html;
+  achievementWrap.innerHTML = ACHIEVEMENT_BADGES.map((badge, index) => {
+    const value = badge.metric(stats);
+    const unlocked = value >= badge.goal;
+    const progress = Math.min(100, Math.round((value / badge.goal) * 100));
+    return `
+      <article class="badge badge--achievement tone-${(index % 6) + 1} ${unlocked ? "unlocked" : "locked"}">
+        <div class="badge-top">
+          <span class="badge-icon">${badge.code}</span>
+          <span class="badge-status">${unlocked ? "Unlocked" : "In Progress"}</span>
+        </div>
+        <h4>${badge.title}</h4>
+        <p>${badge.description}</p>
+        <p class="badge-progress-label">${value}/${badge.goal} ${badge.unit}</p>
+        <div class="badge-progress"><span style="width: ${progress}%"></span></div>
+      </article>
+    `;
+  }).join("");
+
+  if (!sourceTrips.length) {
+    cityWrap.innerHTML = '<div class="empty">No city badges visible for this view yet.</div>';
+    return;
+  }
+
+  cityWrap.innerHTML = sourceTrips
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .map((trip, index) => {
+      const meta = CONTINENT_META[trip.continent] || { code: "TR" };
+      return `
+      <article class="badge badge--city tone-${(index % 6) + 1} unlocked">
+        <div class="badge-top">
+          <span class="badge-icon">${meta.code}</span>
+          <span class="badge-status">${formatDate(trip.date)}</span>
+        </div>
+        <h4>${trip.badge}</h4>
+        <p>${trip.city}, ${trip.country}</p>
+      </article>
+    `;
+    })
+    .join("");
 }
 
 function renderFilters(list) {

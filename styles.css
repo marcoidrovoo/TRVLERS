@@ -304,10 +304,50 @@ input {
   font-weight: 600;
 }
 
+.badge-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.summary-pill {
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(20, 48, 72, 0.14);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 12px;
+}
+
+.summary-pill h4 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.summary-pill p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.badge-section-label {
+  margin-top: 12px;
+}
+
 .badge-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+}
+
+.continent-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.achievement-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.city-badge-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .badge {
@@ -315,23 +355,128 @@ input {
   border: 1px solid rgba(20, 48, 72, 0.14);
   padding: 12px;
   background: rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.badge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent 42%);
+  pointer-events: none;
 }
 
 .badge h4 {
   margin: 0;
   font-size: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .badge p {
   margin: 6px 0 0;
   color: var(--muted);
-  font-size: 0.86rem;
+  font-size: 0.84rem;
+  position: relative;
+  z-index: 1;
+}
+
+.badge-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.badge-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: #0c3d5b;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(12, 61, 91, 0.2);
+}
+
+.badge-status {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #35586f;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(20, 48, 72, 0.14);
+  padding: 3px 7px;
+  border-radius: 999px;
+}
+
+.badge-progress-label {
+  font-size: 0.78rem !important;
+  margin-top: 8px !important;
+}
+
+.badge-progress {
+  margin-top: 6px;
+  height: 8px;
+  background: rgba(20, 48, 72, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.badge-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(120deg, #00b8a9, #6dd9ff 58%, #ffd166);
+}
+
+.badge.locked {
+  opacity: 0.75;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.75), rgba(237, 243, 247, 0.8));
 }
 
 .badge.unlocked {
   border-color: rgba(0, 184, 169, 0.5);
-  box-shadow: inset 0 0 0 1px rgba(0, 184, 169, 0.18), 0 8px 16px rgba(0, 184, 169, 0.14);
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.95), rgba(227, 255, 250, 0.9));
+  box-shadow: inset 0 0 0 1px rgba(0, 184, 169, 0.18), 0 10px 18px rgba(0, 184, 169, 0.14);
+}
+
+.badge--city .badge-progress,
+.badge--city .badge-progress-label {
+  display: none;
+}
+
+.tone-1 {
+  background: linear-gradient(145deg, rgba(232, 255, 249, 0.92), rgba(255, 255, 255, 0.95));
+}
+
+.tone-2 {
+  background: linear-gradient(145deg, rgba(233, 247, 255, 0.92), rgba(255, 255, 255, 0.95));
+}
+
+.tone-3 {
+  background: linear-gradient(145deg, rgba(255, 241, 224, 0.92), rgba(255, 255, 255, 0.95));
+}
+
+.tone-4 {
+  background: linear-gradient(145deg, rgba(255, 236, 241, 0.92), rgba(255, 255, 255, 0.95));
+}
+
+.tone-5 {
+  background: linear-gradient(145deg, rgba(244, 240, 255, 0.92), rgba(255, 255, 255, 0.95));
+}
+
+.tone-6 {
+  background: linear-gradient(145deg, rgba(244, 255, 234, 0.92), rgba(255, 255, 255, 0.95));
 }
 
 .filters {
@@ -606,6 +751,16 @@ input {
     grid-column: span 12;
   }
 
+  .badge-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .continent-grid,
+  .achievement-grid,
+  .city-badge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .city-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -626,6 +781,13 @@ input {
 
   .social-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .badge-summary,
+  .continent-grid,
+  .achievement-grid,
+  .city-badge-grid {
+    grid-template-columns: 1fr;
   }
 
   .filters,
