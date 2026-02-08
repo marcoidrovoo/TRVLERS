@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TRVLERS MVP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-grid"></div>
+
+    <header class="hero reveal">
+      <p class="eyebrow">Travel Identity Platform MVP</p>
+      <h1>TRVLERS</h1>
+      <p class="subtitle">
+        A community profile for travelers: collect place badges, share city-level experiences,
+        and help others plan their next trip from your past itineraries.
+      </p>
+    </header>
+
+    <main class="layout">
+      <section class="panel profile reveal">
+        <div class="profile-top">
+          <img
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=320&q=80"
+            alt="Traveler profile"
+            class="avatar"
+          />
+          <div>
+            <p class="tag">@marco.moves</p>
+            <h2>Marco Idrovo</h2>
+            <p class="bio">
+              Chasing architecture, food, and mountain sunrises. Building open trip logs so other
+              travelers can learn from what actually worked.
+            </p>
+          </div>
+        </div>
+
+        <div class="mode-wrap">
+          <label class="control">
+            Viewing mode
+            <select id="viewModeSelect">
+              <option value="owner">Owner</option>
+              <option value="visitor">Visitor</option>
+            </select>
+          </label>
+
+          <label class="control" id="relationshipControl">
+            Visitor relationship
+            <select id="visitorRelationshipSelect">
+              <option value="public">Public visitor</option>
+              <option value="follower">Follower</option>
+            </select>
+          </label>
+
+          <button id="followBtn" class="btn ghost" type="button">Follow</button>
+        </div>
+
+        <div class="social-metrics">
+          <article>
+            <p class="metric" id="followersMetric">0</p>
+            <p>Followers</p>
+          </article>
+          <article>
+            <p class="metric" id="followingMetric">0</p>
+            <p>Following</p>
+          </article>
+          <article>
+            <p class="metric" id="citiesMetric">0</p>
+            <p>Cities logged</p>
+          </article>
+          <article>
+            <p class="metric" id="badgesMetric">0</p>
+            <p>Badges unlocked</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel badges reveal delay-1">
+        <div class="section-head">
+          <h3>Continent Badge Map</h3>
+          <p>Track progress across all 7 continents.</p>
+        </div>
+        <div id="badgeGrid" class="badge-grid"></div>
+      </section>
+
+      <section class="panel explorer reveal delay-2">
+        <div class="section-head compact">
+          <h3>Travel Explorer</h3>
+          <div class="search-wrap">
+            <input id="citySearch" type="text" placeholder="Search city, country, tip..." />
+          </div>
+        </div>
+
+        <div class="filters">
+          <div>
+            <p class="label">1) Continent</p>
+            <div id="continentFilters" class="chip-row"></div>
+          </div>
+          <div>
+            <p class="label">2) Country</p>
+            <div id="countryFilters" class="chip-row"></div>
+          </div>
+        </div>
+
+        <div class="section-head compact">
+          <p class="label">3) City cards</p>
+          <p id="visibilityNote" class="note"></p>
+        </div>
+        <div id="cityCards" class="city-grid"></div>
+      </section>
+
+      <section class="panel city-detail reveal delay-3">
+        <div id="cityDetail"></div>
+      </section>
+
+      <section class="panel planner reveal delay-4">
+        <div class="section-head">
+          <h3>Plan From Shared Trips</h3>
+          <p>
+            Visitors can pick from published city logs and generate a draft travel plan in one
+            click.
+          </p>
+        </div>
+        <div class="planner-actions">
+          <button id="clearPlannerBtn" class="btn ghost" type="button">Clear Planner</button>
+        </div>
+        <div id="plannerList" class="planner-list"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
