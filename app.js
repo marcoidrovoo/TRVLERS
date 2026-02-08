@@ -18,115 +18,26 @@ const CONTINENT_META = {
   "South America": { code: "SA", vibe: "Andes Pulse" },
 };
 
-const ACHIEVEMENT_BADGES = [
-  {
-    id: "boarded",
-    code: "GO",
-    title: "Boarding Pass",
-    description: "Log your first city to start your traveler identity.",
-    goal: 1,
-    unit: "cities",
-    metric: (stats) => stats.cityCount,
-  },
-  {
-    id: "city-streak",
-    code: "CS",
-    title: "City Streak",
-    description: "Hit five city logs to establish a consistent travel trail.",
-    goal: 5,
-    unit: "cities",
-    metric: (stats) => stats.cityCount,
-  },
-  {
-    id: "country-collector",
-    code: "CC",
-    title: "Country Collector",
-    description: "Expand across six countries.",
-    goal: 6,
-    unit: "countries",
-    metric: (stats) => stats.countryCount,
-  },
-  {
-    id: "continent-cartographer",
-    code: "CT",
-    title: "Continent Cartographer",
-    description: "Reach five continents logged.",
-    goal: 5,
-    unit: "continents",
-    metric: (stats) => stats.continentCount,
-  },
-  {
-    id: "food-trailblazer",
-    code: "FD",
-    title: "Food Trailblazer",
-    description: "Save fifteen restaurant spots from your trips.",
-    goal: 15,
-    unit: "restaurants",
-    metric: (stats) => stats.restaurantCount,
-  },
-  {
-    id: "photo-atlas",
-    code: "PX",
-    title: "Photo Atlas",
-    description: "Document twelve travel photos in your city logs.",
-    goal: 12,
-    unit: "photos",
-    metric: (stats) => stats.photoCount,
-  },
-  {
-    id: "route-architect",
-    code: "RT",
-    title: "Route Architect",
-    description: "Build ten itinerary days to help other travelers plan.",
-    goal: 10,
-    unit: "days",
-    metric: (stats) => stats.itineraryDayCount,
-  },
-  {
-    id: "insider-whisperer",
-    code: "TIP",
-    title: "Insider Whisperer",
-    description: "Share ten field tips from real on-the-ground experience.",
-    goal: 10,
-    unit: "tips",
-    metric: (stats) => stats.tipCount,
-  },
-  {
-    id: "open-journal",
-    code: "PUB",
-    title: "Open Journal",
-    description: "Keep at least three city logs public.",
-    goal: 3,
-    unit: "public logs",
-    metric: (stats) => stats.publicCount,
-  },
-  {
-    id: "inner-circle-host",
-    code: "FOL",
-    title: "Inner Circle Host",
-    description: "Publish two follower-only city guides.",
-    goal: 2,
-    unit: "follower logs",
-    metric: (stats) => stats.followerOnlyCount,
-  },
-  {
-    id: "vault-keeper",
-    code: "PVT",
-    title: "Vault Keeper",
-    description: "Keep one city private while you refine the guide.",
-    goal: 1,
-    unit: "private logs",
-    metric: (stats) => stats.privateCount,
-  },
-  {
-    id: "community-magnet",
-    code: "SOC",
-    title: "Community Magnet",
-    description: "Grow your profile to 1000 followers.",
-    goal: 1000,
-    unit: "followers",
-    metric: (stats) => stats.followerCount,
-  },
+const DEPARTURE_PORTS = [
+  { name: "Barcelona", region: "Spain" },
+  { name: "Brisbane", region: "Australia" },
+  { name: "Cape Town", region: "South Africa" },
+  { name: "Fort Lauderdale", region: "United States" },
+  { name: "Galveston", region: "United States" },
+  { name: "Lisbon", region: "Portugal" },
+  { name: "Los Angeles", region: "United States" },
+  { name: "Miami", region: "United States" },
+  { name: "Port Canaveral", region: "United States" },
+  { name: "Rome (Civitavecchia)", region: "Italy" },
+  { name: "San Juan", region: "Puerto Rico" },
+  { name: "Santos", region: "Brazil" },
+  { name: "Seattle", region: "United States" },
+  { name: "Singapore", region: "Singapore" },
+  { name: "Southampton", region: "United Kingdom" },
+  { name: "Sydney", region: "Australia" },
+  { name: "Tampa", region: "United States" },
+  { name: "Vancouver", region: "Canada" },
+  { name: "Yokohama", region: "Japan" },
 ];
 
 const trips = [
@@ -137,6 +48,8 @@ const trips = [
     city: "Barcelona",
     badge: "Gaudi Hunter",
     date: "2025-07-14",
+    airline: "Iberia",
+    departurePort: "Barcelona",
     privacy: "public",
     photos: [
       "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1000&q=80",
@@ -178,6 +91,8 @@ const trips = [
     city: "Lisbon",
     badge: "Tram 28 Navigator",
     date: "2024-05-02",
+    airline: "TAP Air Portugal",
+    departurePort: "Lisbon",
     privacy: "followers",
     photos: [
       "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1000&q=80",
@@ -216,6 +131,8 @@ const trips = [
     city: "Kyoto",
     badge: "Temple Dawn Seeker",
     date: "2025-03-22",
+    airline: "Japan Airlines",
+    departurePort: "Yokohama",
     privacy: "public",
     photos: [
       "https://images.unsplash.com/photo-1492571350019-22de08371fd3?auto=format&fit=crop&w=1000&q=80",
@@ -257,6 +174,8 @@ const trips = [
     city: "Medellin",
     badge: "Comuna Story Collector",
     date: "2024-11-08",
+    airline: "Avianca",
+    departurePort: "San Juan",
     privacy: "private",
     photos: [
       "https://images.unsplash.com/photo-1574437814637-1d15e84a6f6b?auto=format&fit=crop&w=1000&q=80",
@@ -287,6 +206,8 @@ const trips = [
     city: "Cape Town",
     badge: "Coastline Tracker",
     date: "2023-09-18",
+    airline: "South African Airways",
+    departurePort: "Cape Town",
     privacy: "public",
     photos: [
       "https://images.unsplash.com/photo-1576485375217-d6a95e34d043?auto=format&fit=crop&w=1000&q=80",
@@ -317,6 +238,8 @@ const trips = [
     city: "Vancouver",
     badge: "Rain City Explorer",
     date: "2025-10-01",
+    airline: "Air Canada",
+    departurePort: "Vancouver",
     privacy: "followers",
     photos: [
       "https://images.unsplash.com/photo-1560814304-4f05b62f7254?auto=format&fit=crop&w=1000&q=80",
@@ -398,37 +321,147 @@ function visibleBadgeTrips() {
   return trips.filter((trip) => visibleTrip(trip));
 }
 
-function buildBadgeStats(sourceTrips) {
+function normalizeKey(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase();
+}
+
+function makeBadgeCode(label, maxLength = 3) {
+  const parts = String(label || "")
+    .replace(/[^A-Za-z0-9 ]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (!parts.length) {
+    return "TR";
+  }
+  if (parts.length === 1) {
+    return parts[0].slice(0, maxLength).toUpperCase();
+  }
+  return parts
+    .slice(0, maxLength)
+    .map((part) => part[0].toUpperCase())
+    .join("");
+}
+
+function buildBadgeCollections(sourceTrips) {
+  const visitedContinentSet = new Set(sourceTrips.map((trip) => trip.continent));
+  const cityMap = new Map();
+  const countryCities = new Map();
+  const airlineMap = new Map();
+  const visitedPortSet = new Set();
+
+  sourceTrips
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .forEach((trip) => {
+      const cityKey = `${normalizeKey(trip.city)}|${normalizeKey(trip.country)}`;
+      if (!cityMap.has(cityKey)) {
+        cityMap.set(cityKey, {
+          code: makeBadgeCode(trip.city, 3),
+          name: trip.city,
+          subtitle: trip.country,
+          stamp: formatDate(trip.date),
+          unlocked: true,
+        });
+      }
+
+      const countryKey = normalizeKey(trip.country);
+      if (!countryCities.has(countryKey)) {
+        countryCities.set(countryKey, {
+          code: makeBadgeCode(trip.country, 2),
+          name: trip.country,
+          subtitle: trip.continent,
+          cities: new Set(),
+          unlocked: true,
+        });
+      }
+      countryCities.get(countryKey).cities.add(cityKey);
+
+      if (trip.airline) {
+        const airlineKey = normalizeKey(trip.airline);
+        if (!airlineMap.has(airlineKey)) {
+          airlineMap.set(airlineKey, {
+            code: makeBadgeCode(trip.airline, 3),
+            name: trip.airline,
+            subtitle: "Airline flown",
+            unlocked: true,
+          });
+        }
+      }
+
+      if (trip.departurePort) {
+        visitedPortSet.add(normalizeKey(trip.departurePort));
+      }
+    });
+
+  const continentBadges = CONTINENTS.map((continent) => {
+    const unlocked = visitedContinentSet.has(continent);
+    const meta = CONTINENT_META[continent] || { code: makeBadgeCode(continent, 2), vibe: "Travel Region" };
+    return {
+      code: meta.code,
+      name: continent,
+      subtitle: meta.vibe,
+      unlocked,
+    };
+  });
+
+  const countryBadges = Array.from(countryCities.values())
+    .map((country) => ({
+      code: country.code,
+      name: country.name,
+      subtitle: `${country.cities.size} city badge${country.cities.size === 1 ? "" : "s"}`,
+      unlocked: true,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const cityBadges = Array.from(cityMap.values());
+
+  const portBadges = DEPARTURE_PORTS.map((port) => ({
+    code: makeBadgeCode(port.name, 3),
+    name: port.name,
+    subtitle: port.region,
+    unlocked: visitedPortSet.has(normalizeKey(port.name)),
+  })).sort((a, b) => Number(b.unlocked) - Number(a.unlocked) || a.name.localeCompare(b.name));
+
+  const airlineBadges = Array.from(airlineMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+
   return {
-    cityCount: sourceTrips.length,
-    countryCount: new Set(sourceTrips.map((trip) => trip.country)).size,
-    continentCount: new Set(sourceTrips.map((trip) => trip.continent)).size,
-    restaurantCount: sourceTrips.reduce((total, trip) => total + trip.restaurants.length, 0),
-    photoCount: sourceTrips.reduce((total, trip) => total + trip.photos.length, 0),
-    itineraryDayCount: sourceTrips.reduce((total, trip) => total + trip.itinerary.length, 0),
-    tipCount: sourceTrips.reduce((total, trip) => total + trip.tips.length, 0),
-    publicCount: sourceTrips.filter((trip) => trip.privacy === "public").length,
-    followerOnlyCount: sourceTrips.filter((trip) => trip.privacy === "followers").length,
-    privateCount: sourceTrips.filter((trip) => trip.privacy === "private").length,
-    followerCount: state.followers,
+    continentBadges,
+    countryBadges,
+    cityBadges,
+    portBadges,
+    airlineBadges,
   };
 }
 
 function buildBadgeCounts(sourceTrips) {
-  const stats = buildBadgeStats(sourceTrips);
-  const unlockedContinents = CONTINENTS.filter((continent) =>
-    sourceTrips.some((trip) => trip.continent === continent)
-  ).length;
-  const unlockedAchievements = ACHIEVEMENT_BADGES.filter((badge) => badge.metric(stats) >= badge.goal).length;
-  const unlockedCityBadges = sourceTrips.length;
+  const collections = buildBadgeCollections(sourceTrips);
+  const unlockedContinents = collections.continentBadges.filter((badge) => badge.unlocked).length;
+  const unlockedPorts = collections.portBadges.filter((badge) => badge.unlocked).length;
+  const unlockedCountries = collections.countryBadges.length;
+  const unlockedCities = collections.cityBadges.length;
+  const unlockedAirlines = collections.airlineBadges.length;
+
+  const unlocked =
+    unlockedContinents + unlockedCountries + unlockedCities + unlockedPorts + unlockedAirlines;
+  const total =
+    CONTINENTS.length +
+    unlockedCountries +
+    unlockedCities +
+    DEPARTURE_PORTS.length +
+    unlockedAirlines;
 
   return {
-    unlocked: unlockedContinents + unlockedAchievements + unlockedCityBadges,
-    total: CONTINENTS.length + ACHIEVEMENT_BADGES.length + sourceTrips.length,
-    unlockedAchievements,
+    unlocked,
+    total,
     unlockedContinents,
-    unlockedCityBadges,
-    stats,
+    unlockedCountries,
+    unlockedCities,
+    unlockedPorts,
+    unlockedAirlines,
+    collections,
   };
 }
 
@@ -533,98 +566,79 @@ function renderProfile() {
   }
 }
 
+function badgeCardTemplate(badge, index, typeClass = "") {
+  return `
+    <article class="badge ${typeClass} tone-${(index % 6) + 1} ${badge.unlocked ? "unlocked" : "locked"}">
+      <div class="badge-top">
+        <span class="badge-icon">${badge.code}</span>
+        <span class="badge-status">${badge.unlocked ? badge.stamp || "Unlocked" : "Locked"}</span>
+      </div>
+      <h4>${badge.name}</h4>
+      <p>${badge.subtitle}</p>
+    </article>
+  `;
+}
+
 function renderBadges() {
   const continentWrap = document.getElementById("badgeGrid");
-  const achievementWrap = document.getElementById("achievementGrid");
+  const countryWrap = document.getElementById("countryBadgeGrid");
   const cityWrap = document.getElementById("cityBadgeGrid");
+  const portWrap = document.getElementById("portBadgeGrid");
+  const airlineWrap = document.getElementById("airlineBadgeGrid");
   const summaryWrap = document.getElementById("badgeSummary");
 
   const sourceTrips = visibleBadgeTrips();
   const badgeCounts = buildBadgeCounts(sourceTrips);
-  const stats = badgeCounts.stats;
-  const visitedByContinent = CONTINENTS.reduce((acc, continent) => {
-    acc[continent] = sourceTrips.filter((trip) => trip.continent === continent).length;
-    return acc;
-  }, {});
+  const { continentBadges, countryBadges, cityBadges, portBadges, airlineBadges } = badgeCounts.collections;
 
   summaryWrap.innerHTML = `
     <article class="summary-pill">
       <h4>${badgeCounts.unlocked}/${badgeCounts.total}</h4>
-      <p>Badges unlocked</p>
+      <p>Total badges</p>
+    </article>
+    <article class="summary-pill">
+      <h4>${badgeCounts.unlockedCities}</h4>
+      <p>City badges</p>
+    </article>
+    <article class="summary-pill">
+      <h4>${badgeCounts.unlockedCountries}</h4>
+      <p>Country badges</p>
     </article>
     <article class="summary-pill">
       <h4>${badgeCounts.unlockedContinents}/${CONTINENTS.length}</h4>
-      <p>Continents covered</p>
+      <p>Continent badges</p>
     </article>
     <article class="summary-pill">
-      <h4>${badgeCounts.unlockedAchievements}/${ACHIEVEMENT_BADGES.length}</h4>
-      <p>Achievements unlocked</p>
+      <h4>${badgeCounts.unlockedPorts}/${DEPARTURE_PORTS.length}</h4>
+      <p>Departure ports</p>
     </article>
     <article class="summary-pill">
-      <h4>${badgeCounts.unlockedCityBadges}</h4>
-      <p>City signature badges</p>
+      <h4>${badgeCounts.unlockedAirlines}</h4>
+      <p>Airlines flown</p>
     </article>
   `;
 
-  continentWrap.innerHTML = CONTINENTS.map((continent, index) => {
-    const count = visitedByContinent[continent] || 0;
-    const unlocked = count > 0;
-    const progress = Math.min(100, count * 34);
-    const meta = CONTINENT_META[continent] || { code: "TR", vibe: "Travel Track" };
-    return `
-      <article class="badge badge--continent tone-${(index % 6) + 1} ${unlocked ? "unlocked" : "locked"}">
-        <div class="badge-top">
-          <span class="badge-icon">${meta.code}</span>
-          <span class="badge-status">${unlocked ? "Unlocked" : "Locked"}</span>
-        </div>
-        <h4>${continent}</h4>
-        <p>${meta.vibe}</p>
-        <p class="badge-progress-label">${count} city stamp${count === 1 ? "" : "s"}</p>
-        <div class="badge-progress"><span style="width: ${progress}%"></span></div>
-      </article>
-    `;
-  }).join("");
+  continentWrap.innerHTML = continentBadges.map((badge, index) => badgeCardTemplate(badge, index, "badge--continent")).join("");
 
-  achievementWrap.innerHTML = ACHIEVEMENT_BADGES.map((badge, index) => {
-    const value = badge.metric(stats);
-    const unlocked = value >= badge.goal;
-    const progress = Math.min(100, Math.round((value / badge.goal) * 100));
-    return `
-      <article class="badge badge--achievement tone-${(index % 6) + 1} ${unlocked ? "unlocked" : "locked"}">
-        <div class="badge-top">
-          <span class="badge-icon">${badge.code}</span>
-          <span class="badge-status">${unlocked ? "Unlocked" : "In Progress"}</span>
-        </div>
-        <h4>${badge.title}</h4>
-        <p>${badge.description}</p>
-        <p class="badge-progress-label">${value}/${badge.goal} ${badge.unit}</p>
-        <div class="badge-progress"><span style="width: ${progress}%"></span></div>
-      </article>
-    `;
-  }).join("");
-
-  if (!sourceTrips.length) {
-    cityWrap.innerHTML = '<div class="empty">No city badges visible for this view yet.</div>';
-    return;
+  if (!countryBadges.length) {
+    countryWrap.innerHTML = '<div class="empty">No country badges unlocked in this view.</div>';
+  } else {
+    countryWrap.innerHTML = countryBadges.map((badge, index) => badgeCardTemplate(badge, index, "badge--country")).join("");
   }
 
-  cityWrap.innerHTML = sourceTrips
-    .slice()
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .map((trip, index) => {
-      const meta = CONTINENT_META[trip.continent] || { code: "TR" };
-      return `
-      <article class="badge badge--city tone-${(index % 6) + 1} unlocked">
-        <div class="badge-top">
-          <span class="badge-icon">${meta.code}</span>
-          <span class="badge-status">${formatDate(trip.date)}</span>
-        </div>
-        <h4>${trip.badge}</h4>
-        <p>${trip.city}, ${trip.country}</p>
-      </article>
-    `;
-    })
-    .join("");
+  if (!cityBadges.length) {
+    cityWrap.innerHTML = '<div class="empty">No city badges visible for this view yet.</div>';
+  } else {
+    cityWrap.innerHTML = cityBadges.map((badge, index) => badgeCardTemplate(badge, index, "badge--city")).join("");
+  }
+
+  portWrap.innerHTML = portBadges.map((badge, index) => badgeCardTemplate(badge, index, "badge--port")).join("");
+
+  if (!airlineBadges.length) {
+    airlineWrap.innerHTML = '<div class="empty">No airline badges unlocked in this view.</div>';
+  } else {
+    airlineWrap.innerHTML = airlineBadges.map((badge, index) => badgeCardTemplate(badge, index, "badge--airline")).join("");
+  }
 }
 
 function renderFilters(list) {
@@ -756,6 +770,8 @@ function renderCityDetail() {
           <span>${trip.continent}</span>
           <span>Visited ${formatDate(trip.date)}</span>
           <span>Badge: ${trip.badge}</span>
+          ${trip.airline ? `<span>Airline: ${trip.airline}</span>` : ""}
+          ${trip.departurePort ? `<span>Departure Port: ${trip.departurePort}</span>` : ""}
         </div>
       </div>
       <div>

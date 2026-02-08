@@ -306,21 +306,23 @@ input {
 
 .badge-summary {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   margin-bottom: 14px;
 }
 
 .summary-pill {
   border-radius: var(--radius-md);
-  border: 1px solid rgba(20, 48, 72, 0.14);
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(20, 48, 72, 0.18);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(247, 253, 255, 0.95));
   padding: 10px 12px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75);
 }
 
 .summary-pill h4 {
   margin: 0;
-  font-size: 1.08rem;
+  font-size: 1.1rem;
+  color: #0f3f5f;
 }
 
 .summary-pill p {
@@ -342,7 +344,7 @@ input {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.achievement-grid {
+.country-badge-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
@@ -350,21 +352,50 @@ input {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.port-badge-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.airline-badge-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .badge {
+  --glow: rgba(109, 217, 255, 0.26);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(20, 48, 72, 0.14);
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(20, 48, 72, 0.17);
+  padding: 13px;
+  background: radial-gradient(circle at 10% 8%, rgba(255, 255, 255, 0.98) 0%, rgba(240, 249, 255, 0.92) 100%);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 10px 22px rgba(44, 78, 102, 0.12);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
 .badge::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent 42%);
+  background: linear-gradient(128deg, rgba(255, 255, 255, 0.48), transparent 45%);
   pointer-events: none;
+}
+
+.badge::after {
+  content: "";
+  position: absolute;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  top: -26px;
+  right: -22px;
+  background: var(--glow);
+  filter: blur(2px);
+}
+
+.badge:hover {
+  transform: translateY(-2px);
+  border-color: rgba(20, 48, 72, 0.25);
+  box-shadow: 0 14px 24px rgba(44, 78, 102, 0.16);
 }
 
 .badge h4 {
@@ -372,11 +403,12 @@ input {
   font-size: 1rem;
   position: relative;
   z-index: 1;
+  color: #124765;
 }
 
 .badge p {
   margin: 6px 0 0;
-  color: var(--muted);
+  color: #49667a;
   font-size: 0.84rem;
   position: relative;
   z-index: 1;
@@ -396,87 +428,84 @@ input {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 38px;
-  height: 28px;
+  min-width: 36px;
+  height: 36px;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   letter-spacing: 0.08em;
-  color: #0c3d5b;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(12, 61, 91, 0.2);
+  color: #0d415f;
+  background: linear-gradient(150deg, #ffffff, #f4fbff);
+  border: 1px solid rgba(12, 61, 91, 0.22);
+  box-shadow: 0 4px 10px rgba(25, 73, 101, 0.15);
 }
 
 .badge-status {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #35586f;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(20, 48, 72, 0.14);
+  color: #2f576f;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(20, 48, 72, 0.16);
   padding: 3px 7px;
   border-radius: 999px;
-}
-
-.badge-progress-label {
-  font-size: 0.78rem !important;
-  margin-top: 8px !important;
-}
-
-.badge-progress {
-  margin-top: 6px;
-  height: 8px;
-  background: rgba(20, 48, 72, 0.12);
-  border-radius: 999px;
-  overflow: hidden;
   position: relative;
   z-index: 1;
 }
 
-.badge-progress span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(120deg, #00b8a9, #6dd9ff 58%, #ffd166);
-}
-
 .badge.locked {
-  opacity: 0.75;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.75), rgba(237, 243, 247, 0.8));
+  opacity: 0.62;
+  filter: grayscale(0.16) saturate(0.6);
+  box-shadow: none;
 }
 
 .badge.unlocked {
-  border-color: rgba(0, 184, 169, 0.5);
-  box-shadow: inset 0 0 0 1px rgba(0, 184, 169, 0.18), 0 10px 18px rgba(0, 184, 169, 0.14);
+  border-color: rgba(20, 48, 72, 0.24);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.76), 0 11px 22px rgba(44, 78, 102, 0.14);
 }
 
-.badge--city .badge-progress,
-.badge--city .badge-progress-label {
-  display: none;
+.badge--continent {
+  --glow: rgba(109, 217, 255, 0.35);
+}
+
+.badge--country {
+  --glow: rgba(255, 209, 102, 0.35);
+}
+
+.badge--city {
+  --glow: rgba(255, 159, 126, 0.34);
+}
+
+.badge--port {
+  --glow: rgba(0, 184, 169, 0.3);
+}
+
+.badge--airline {
+  --glow: rgba(173, 170, 255, 0.32);
 }
 
 .tone-1 {
-  background: linear-gradient(145deg, rgba(232, 255, 249, 0.92), rgba(255, 255, 255, 0.95));
+  background: linear-gradient(145deg, rgba(234, 254, 249, 0.95), rgba(255, 255, 255, 0.97));
 }
 
 .tone-2 {
-  background: linear-gradient(145deg, rgba(233, 247, 255, 0.92), rgba(255, 255, 255, 0.95));
+  background: linear-gradient(145deg, rgba(233, 247, 255, 0.95), rgba(255, 255, 255, 0.97));
 }
 
 .tone-3 {
-  background: linear-gradient(145deg, rgba(255, 241, 224, 0.92), rgba(255, 255, 255, 0.95));
+  background: linear-gradient(145deg, rgba(255, 243, 226, 0.95), rgba(255, 255, 255, 0.97));
 }
 
 .tone-4 {
-  background: linear-gradient(145deg, rgba(255, 236, 241, 0.92), rgba(255, 255, 255, 0.95));
+  background: linear-gradient(145deg, rgba(255, 239, 244, 0.95), rgba(255, 255, 255, 0.97));
 }
 
 .tone-5 {
-  background: linear-gradient(145deg, rgba(244, 240, 255, 0.92), rgba(255, 255, 255, 0.95));
+  background: linear-gradient(145deg, rgba(246, 241, 255, 0.95), rgba(255, 255, 255, 0.97));
 }
 
 .tone-6 {
-  background: linear-gradient(145deg, rgba(244, 255, 234, 0.92), rgba(255, 255, 255, 0.95));
+  background: linear-gradient(145deg, rgba(245, 255, 236, 0.95), rgba(255, 255, 255, 0.97));
 }
 
 .filters {
@@ -756,8 +785,10 @@ input {
   }
 
   .continent-grid,
-  .achievement-grid,
-  .city-badge-grid {
+  .country-badge-grid,
+  .city-badge-grid,
+  .port-badge-grid,
+  .airline-badge-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -785,8 +816,10 @@ input {
 
   .badge-summary,
   .continent-grid,
-  .achievement-grid,
-  .city-badge-grid {
+  .country-badge-grid,
+  .city-badge-grid,
+  .port-badge-grid,
+  .airline-badge-grid {
     grid-template-columns: 1fr;
   }
 
